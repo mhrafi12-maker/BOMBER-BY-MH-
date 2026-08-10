@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTIMATE STRESS ENGINE - MH RAFI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #020604;
+            color: #00ff66;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        .cyber-card {
+            background: rgba(3, 15, 8, 0.95);
+            border: 1px solid rgba(0, 255, 102, 0.4);
+            box-shadow: 0 0 40px rgba(0, 255, 102, 0.25), inset 0 0 15px rgba(0, 255, 102, 0.08);
+            border-radius: 28px;
+            padding: 22px 18px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            position: relative;
+        }
+
+        .app-header {
+            margin-bottom: 12px;
+            border-bottom: 1px dashed rgba(0, 255, 102, 0.25);
+            padding-bottom: 10px;
+        }
+
+        .brand-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            text-shadow: 0 0 12px #00ff66;
+        }
+
+        .brand-subtitle {
+            font-size: 0.68rem;
+            color: #00ff66;
+            letter-spacing: 2px;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .hud-circle-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 8px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .orbit-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 255, 102, 0.25);
+            border-top: 2px solid #00ff66;
+            border-right: 2px solid #00ff66;
+            transition: transform 0.2s linear;
+        }
+
+        .orbit-ring.spinning {
+            animation: spin 0.4s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .counter-inner {
+            z-index: 2;
+            text-align: center;
+        }
+
+        .counter {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            line-height: 1;
+        }
+
+        .counter span {
+            font-size: 0.9rem;
+            color: #00ff66;
+        }
+
+        .speed-label {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #00ff66;
+            margin-top: 5px;
+        }
+
+        .hud-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin: 12px 0 8px 0;
+        }
+
+        .hud-stat-box {
+            background: rgba(0, 255, 102, 0.04);
+            border: 1px solid rgba(0, 255, 102, 0.15);
+            border-radius: 12px;
+            padding: 8px 2px;
+        }
+
+        .hud-stat-title {
+            font-size: 0.55rem;
+            color: #88ffbb;
+            opacity: 0.75;
+            text-transform: uppercase;
+        }
+
+        .hud-stat-value {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+
+        .chart-box {
+            width: 100%;
+            height: 60px;
+            margin: 8px 0;
+            background: rgba(0, 10, 4, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 102, 0.2);
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .control-panel {
+            background: rgba(0, 20, 8, 0.6);
+            border-radius: 16px;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid rgba(0, 255, 102, 0.12);
+            text-align: left;
+        }
+
+        .panel-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            margin-bottom: 6px;
+            color: #88ffbb;
+            font-weight: 700;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 5px;
+            border-radius: 5px;
+            background: rgba(0, 255, 102, 0.2);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00ff66;
+            cursor: pointer;
+            box-shadow: 0 0 8px #00ff66;
+        }
+
+        .toggle-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(0, 255, 102, 0.1);
+        }
+
+        .limit-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .limit-btn {
+            padding: 8px 0;
+            font-size: 0.72rem;
+            font-weight: 800;
+            background: rgba(0, 255, 102, 0.05);
+            border: 1px solid rgba(0, 255, 102, 0.18);
+            color: #00ff66;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .limit-btn.active {
+            background: #00ff66;
+            color: #020604;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+
+        .progress-box {
+            background: rgba(0, 15, 6, 0.6);
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin: 8px 0 12px 0;
+            border: 1px solid rgba(0, 255, 102, 0.15);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #88ffbb;
+        }
+
+        .progress-bar-bg {
+            height: 6px;
+            width: 100%;
+            background: rgba(0, 255, 102, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #00ff66;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00ff66;
+            transition: width 0.2s ease;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+            transition: 0.2s;
+        }
+
+        .btn-start {
+            background: #00ff66;
+            color: #020604;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        }
+
+        .btn-stop {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-stop.active-stop {
+            opacity: 1;
+            cursor: pointer;
+            background: #dc2626;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="cyber-card">
+    <div class="app-header">
+        <div class="brand-title">ULTIMATE STRESS ENGINE</div>
+        <div class="brand-subtitle">MAX POWER EDITION BY MH RAFI</div>
+    </div>
+
+    <div class="hud-circle-container">
+        <div class="orbit-ring" id="orbitRing"></div>
+        <div class="counter-inner">
+            <div class="counter" id="totalData">0.00 <span>MB</span></div>
+            <div class="speed-label" id="speedText">0.00 MB/s</div>
+        </div>
+    </div>
+
+    <div class="hud-stats-grid">
+        <div class="hud-stat-box">
+            <div class="hud-stat-title">Peak Speed</div>
+            <div class="hud-stat-value" id="peakSpeedText">0.00 MB/s</div>
+        </div>
+        <div class="hud-stat-box">
+            <div class="hud-stat-title">RAM Load</div>
+            <div class="hud-stat-value" id="ramLoadText">OFF</div>
+        </div>
+        <div class="hud-stat-box">
+            <div class="hud-stat-title">Time Left</div>
+            <div class="hud-stat-value" id="etaText">--:--</div>
+        </div>
+        <div class="hud-stat-box">
+            <div class="hud-stat-title">Duration</div>
+            <div class="hud-stat-value" id="timerText">00:00</div>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        <canvas id="speedChart"></canvas>
+    </div>
+
+    <div class="control-panel">
+        <div class="panel-row">
+            <span>Parallel Connections:</span>
+            <strong id="threadVal" style="color: #00ff66">24</strong>
+        </div>
+        <div class="slider-container">
+            <input type="range" min="1" max="40" value="24" class="slider" id="threadSlider" oninput="updateThreads(this.value)">
+        </div>
+
+        <div class="toggle-box">
+            <span>RAM Benchmark Emulation</span>
+            <input type="checkbox" id="ramToggle" style="accent-color: #00ff66; cursor: pointer;">
+        </div>
+    </div>
+
+    <div class="limit-selector">
+        <button class="limit-btn" onclick="setTarget(1024, this)">1 GB</button>
+        <button class="limit-btn" onclick="setTarget(5120, this)">5 GB</button>
+        <button class="limit-btn active" onclick="setTarget(10240, this)">10 GB</button>
+        <button class="limit-btn" onclick="setTarget(0, this)">∞ Max</button>
+    </div>
+
+    <div class="progress-box">
+        <div class="progress-info">
+            <span>Target Progress</span>
+            <span id="targetLabel">10 GB</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="action-btn btn-start" id="startBtn" onclick="startWasting()">BOOST DRAIN</button>
+        <button class="action-btn btn-stop" id="stopBtn" onclick="stopWasting()" disabled>STOP</button>
+    </div>
+</div>
+
+<script>
+    let isRunning = false;
+    let totalBytesUsed = 0;
+    let lastBytes = 0;
+    let speedInterval = null;
+    let clockInterval = null;
+    let ramInterval = null;
+    let targetMB = 10240;
+    let threads = 24; 
+    let peakSpeed = 0;
+    let wakeLock = null;
+    let secondsElapsed = 0;
+    let memoryAllocations = [];
+
+    const canvas = document.getElementById('speedChart');
+    const ctx = canvas.getContext('2d');
+    let speedData = new Array(35).fill(0);
+
+    const cdnEndpoints = [
+        "https://speed.cloudflare.com/__down?bytes=50000000",
+        "https://download.bandwidth.com/100MB.bin",
+        "https://speed.hetzner.de/100MB.bin",
+        "https://raw.githubusercontent.com/bi286/Data-Test/main/50mb.bin"
+    ];
+
+    function updateThreads(val) {
+        threads = parseInt(val);
+        document.getElementById('threadVal').innerText = val;
+    }
+
+    function setTarget(mb, btn) {
+        if (isRunning) return;
+        targetMB = mb;
+        document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.getElementById('targetLabel').innerText = mb === 0 ? "Unlimited" : (mb >= 1024 ? (mb/1024) + " GB" : mb + " MB");
+        updateProgress();
+    }
+
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+            }
+        } catch (err) {}
+    }
+
+    function releaseWakeLock() {
+        if (wakeLock !== null) {
+            wakeLock.release().then(() => { wakeLock = null; });
+        }
+    }
+
+    async function startWasting() {
+        if (isRunning) return;
+        
+        isRunning = true;
+        secondsElapsed = 0;
+        await requestWakeLock();
+
+        document.getElementById('orbitRing').classList.add('spinning');
+        document.getElementById('startBtn').style.opacity = "0.3";
+        document.getElementById('startBtn').disabled = true;
+        
+        const stopBtn = document.getElementById('stopBtn');
+        stopBtn.disabled = false;
+        stopBtn.classList.add('active-stop');
+
+        lastBytes = totalBytesUsed;
+        speedInterval = setInterval(calculateSpeed, 1000);
+        clockInterval = setInterval(updateTimer, 1000);
+
+        if (document.getElementById('ramToggle').checked) {
+            startRamBenchmark();
+        }
+
+        for (let i = 0; i < threads; i++) {
+            downloadLoop(i);
+        }
+    }
+
+    function startRamBenchmark() {
+        document.getElementById('ramLoadText').innerText = "HIGH";
+        document.getElementById('ramLoadText').style.color = "#00ff66";
+        ramInterval = setInterval(() => {
+            if (!isRunning) return;
+            // Temp allocation and release for RAM benchmarking
+            try {
+                let tempArr = new Array(2000000).fill(Math.random());
+                memoryAllocations.push(tempArr);
+                if (memoryAllocations.length > 10) {
+                    memoryAllocations.shift(); // keep it safe
+                }
+            } catch(e) {}
+        }, 300);
+    }
+
+    async function downloadLoop(threadIndex) {
+        while (isRunning) {
+            try {
+                const baseUrl = cdnEndpoints[threadIndex % cdnEndpoints.length];
+                const finalUrl = baseUrl + (baseUrl.includes('?') ? '&cb=' : '?cb=') + Date.now() + "_" + Math.random();
+                
+                const response = await fetch(finalUrl, { cache: 'no-store' });
+                const reader = response.body.getReader();
+
+                while (isRunning) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    if (value) {
+                        totalBytesUsed += value.length;
+                        updateUI();
+                        if (checkLimit()) return;
+                    }
+                }
+            } catch (err) {
+                await new Promise(r => setTimeout(r, 100));
+            }
+        }
+    }
+
+    function checkLimit() {
+        if (targetMB > 0 && (totalBytesUsed / (1024 * 1024)) >= targetMB) {
+            stopWasting();
+            alert(`🔥 DRAIN & BENCHMARK COMPLETE!\n\nMH RAFI-এর ইঞ্জিন দিয়ে মোট ${targetMB >= 1024 ? (targetMB/1024).toFixed(2) + " GB" : targetMB + " MB"} প্রসেস করা হয়েছে!`);
+            return true;
+        }
+        return false;
+    }
+
+    function stopWasting() {
+        if (!isRunning) return;
+        isRunning = false;
+        clearInterval(speedInterval);
+        clearInterval(clockInterval);
+        clearInterval(ramInterval);
+        memoryAllocations = [];
+        releaseWakeLock();
+
+        document.getElementById('orbitRing').classList.remove('spinning');
+        document.getElementById('speedText').innerText = "0.00 MB/s";
+        document.getElementById('etaText').innerText = "--:--";
+        document.getElementById('ramLoadText').innerText = "OFF";
+
+        document.getElementById('startBtn').style.opacity = "1";
+        document.getElementById('startBtn').disabled = false;
+
+        const stopBtn = document.getElementById('stopBtn');
+        stopBtn.disabled = true;
+        stopBtn.classList.remove('active-stop');
+    }
+
+    function updateTimer() {
+        secondsElapsed++;
+        const m = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+        const s = (secondsElapsed % 60).toString().padStart(2, '0');
+        document.getElementById('timerText').innerText = `${m}:${s}`;
+    }
+
+    function updateUI() {
+        const mb = totalBytesUsed / (1024 * 1024);
+        if (mb >= 1024) {
+            const gb = mb / 1024;
+            document.getElementById('totalData').innerHTML = `${gb.toFixed(2)} <span>GB</span>`;
+        } else {
+            document.getElementById('totalData').innerHTML = `${mb.toFixed(2)} <span>MB</span>`;
+        }
+        updateProgress();
+    }
+
+    function updateProgress() {
+        if (targetMB === 0) {
+            document.getElementById('progressFill').style.width = "100%";
+            return;
+        }
+        const currentMB = totalBytesUsed / (1024 * 1024);
+        const percentage = Math.min((currentMB / targetMB) * 100, 100);
+        document.getElementById('progressFill').style.width = `${percentage}%`;
+    }
+
+    function calculateSpeed() {
+        const bytesInLastSecond = totalBytesUsed - lastBytes;
+        lastBytes = totalBytesUsed;
+        const mbps = parseFloat((bytesInLastSecond / (1024 * 1024)).toFixed(2));
+        
+        if (mbps > peakSpeed) {
+            peakSpeed = mbps;
+            document.getElementById('peakSpeedText').innerText = `${peakSpeed.toFixed(2)} MB/s`;
+        }
+
+        document.getElementById('speedText').innerText = `${mbps.toFixed(2)} MB/s`;
+
+        if (targetMB > 0 && mbps > 0) {
+            const currentMB = totalBytesUsed / (1024 * 1024);
+            const remainingMB = targetMB - currentMB;
+            const remainingSeconds = Math.max(0, remainingMB / mbps);
+            const mins = Math.floor(remainingSeconds / 60);
+            const secs = Math.floor(remainingSeconds % 60);
+            document.getElementById('etaText').innerText = `${mins}m ${secs}s`;
+        }
+
+        speedData.push(mbps);
+        speedData.shift();
+        drawNeonChart();
+    }
+
+    function drawNeonChart() {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const maxVal = Math.max(...speedData, 10);
+        const step = canvas.width / (speedData.length - 1);
+
+        ctx.beginPath();
+        ctx.strokeStyle = '#00ff66';
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < speedData.length; i++) {
+            const x = i * step;
+            const y = canvas.height - (speedData[i] / maxVal) * canvas.height;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+    }
+</script>
+</body>
+</html>
